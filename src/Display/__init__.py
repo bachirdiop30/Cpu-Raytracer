@@ -1,1 +1,1 @@
-from .ppmwriter import PPMWriter
+from .PPMWriter import PPMWriter

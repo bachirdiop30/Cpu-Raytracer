@@ -1,3 +1,4 @@
+from __future__ import annotations
 import math
 
 # Source : https://raytracing.github.io/books/RayTracingInOneWeekend.html#thevec3class
@@ -9,7 +10,7 @@ class Vector3:
         self.z = z
 
     # addition vector + another
-    def __add__(self, another) -> Vector3:
+    def __add__(self, another) -> "Vector3":
         if isinstance(another, Vector3):
             return Vector3(self.x + another.x, self.y + another.y, self.z + another.z)
         elif isinstance(another, (int, float)):
@@ -20,7 +21,7 @@ class Vector3:
         return self.__add__(another)
     
     # soustration
-    def __sub__(self, another) -> Vector3:
+    def __sub__(self, another) -> "Vector3":
         if isinstance(another, Vector3):
             return Vector3(self.x - another.x, self.y - another.y, self.z - another.z)
         elif isinstance(another, (int, float)):
@@ -33,7 +34,7 @@ class Vector3:
             return Vector3(another - self.x, another - self.y, another - self.z)
     
     # multiplication
-    def __mul__(self, another) -> Vector3:
+    def __mul__(self, another) -> "Vector3":
         if isinstance(another, Vector3):
             return Vector3(self.x * another.x, self.y * another.y, self.z * another.z)
         elif isinstance(another, (int, float)):
