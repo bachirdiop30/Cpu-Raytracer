@@ -27,9 +27,12 @@ class Vector3:
             return Vector3(self.x - another, self.y - another, self.z - another)
         
     def __rsub__(self, another):
-        return self.__add__(another)
+        if isinstance(another, Vector3):
+            return Vector3(another.x - self.x, another.y - self.y, another.z - self.z)
+        elif isinstance(another, (int, float)):
+            return Vector3(another - self.x, another - self.y, another - self.z)
     
-    # multiplication (dot)
+    # multiplication
     def __mul__(self, another) -> Vector3:
         if isinstance(another, Vector3):
             return Vector3(self.x * another.x, self.y * another.y, self.z * another.z)
@@ -37,7 +40,7 @@ class Vector3:
             return Vector3(self.x * another, self.y * another, self.z * another)
         
     def __rmul__(self, another):
-        return self.__add__(another)
+        return self.__mul__(another)
 
     # division
     def __truediv__(self, another) -> Vector3:
@@ -51,18 +54,15 @@ class Vector3:
         return f"({self.x}, {self.y}, {self.z})"
 
     # longueur
-    def length(self, vector : Vector3 = None):
-        if vector:
-            return math.sqrt(Vector3(vector.x**2, vector.y**2, vector.z**2))
-        else:
-            return math.sqrt(Vector3(self.x**2, self.y**2, self.z**2))
+    def length(self):
+        return math.sqrt(self.x*self.x + self.y*self.y + self.z*self.z)
 
-    def length_squared(self, vector : Vector3 = None):
-        return self.length(vector)**2
+    def length_squared(self):
+        return self.x*self.x + self.y*self.y + self.z*self.z
     
     # produit scalaire
     def dot(self, vector : Vector3):
-        return self * vector
+        return self.x * vector.x + self.y * vector.y + self.z * vector.z
     
     # produit
     def cross(self, vector : Vector3):
@@ -75,3 +75,4 @@ class Vector3:
     def normalize(self):
         return self / self.length()
     
+Point3 = Color3 = Vector3

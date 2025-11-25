@@ -1,1 +1,1 @@
-from .vector import Vector3
+from .vector import *
