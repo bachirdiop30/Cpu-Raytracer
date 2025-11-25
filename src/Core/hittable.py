@@ -43,6 +43,8 @@ class HittableList(Hittable):
             if obj.hit(r, ray_tmin, closest_so_far, temp_rec):
                 hit_anything = True
 
+                closest_so_far = temp_rec.distance
+
                 hit_record.point = temp_rec.point
                 hit_record.normal = temp_rec.normal
                 hit_record.distance = temp_rec.distance
