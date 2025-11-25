@@ -1,1 +1,0 @@
-from .PPMWriter import PPMWriter
