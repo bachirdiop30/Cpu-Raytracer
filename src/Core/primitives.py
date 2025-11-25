@@ -2,6 +2,10 @@ from Math.vector import *
 from .ray import Ray
 from math import sqrt
 
+
+#deprecated
+
+
 """
 Source : https://raytracing.github.io/books/RayTracingInOneWeekend.html#addingasphere 
 (Cx − x)^2+(Cy − y)^2+(Cz − z)^ = (C − P)⋅(C − P) = r2 = any point P that satisfies this equation is on the sphere
