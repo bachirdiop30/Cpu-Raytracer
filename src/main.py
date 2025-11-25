@@ -3,6 +3,8 @@ from Display.ppmwriter import PPMWriter
 from Core.ray import Ray
 from Core.primitives import hit_sphere
 
+import time
+
 def ray_color(r : Ray) -> Color3:
     t = hit_sphere(Vector3(0,0,-1), 0.5, r)
     if t:
@@ -13,11 +15,11 @@ def ray_color(r : Ray) -> Color3:
     a = 0.5 * (unit_dir.y + 1.0)
     return (1.0 - a) * Color3(1,1,1) + a * Color3(0.5, 0.7, 1.0)
 
-
+start = time.time()
 # Camera and image Setup
 # Source : https://raytracing.github.io/images/fig-1.04-pixel-grid.jpg
 aspect_ratio = 16.0 / 9.0
-image_width = 400
+image_width = 200
 image_height = int(image_width / aspect_ratio)
 
 viewport_height = 2.0
@@ -51,3 +53,5 @@ print(f"Début du rendu: {image_width}x{image_height}")
 with open("output.ppm", "w") as f:
     writer = PPMWriter(image_width, image_height, f)
     writer.write_image(image)
+
+print("Took " + str(time.time() - start) +"s")
