@@ -1,5 +1,7 @@
-from .hittable import *
-
+from Core.hittable import Hittable, HitRecord
+from Core.ray import Ray
+from Math.vector import Vector3, Point3
+from Utils.intervals import Interval
 from math import sqrt
 
 
@@ -15,7 +17,7 @@ class Sphere(Hittable):
         self.center = center
         self.radius = radius
 
-    def hit(self, r, ray_tmin, ray_tmax, hit_record):
+    def hit(self, r, interval : Interval, hit_record): # TODO : non finite recursion
         oc = self.center - r.origin
         a = r.direction.length_squared()
         half_b = r.direction.dot(oc)
@@ -29,12 +31,12 @@ class Sphere(Hittable):
 
         root = (half_b - sqrtd) / a
 
-        if root < ray_tmin: 
+        if root < interval.min_val: 
             root = (half_b + sqrtd) / a
-            if root < ray_tmin:
+            if root < interval.min_val:
                 return False
             
-        if root > ray_tmax: 
+        if root > interval.max_val: 
             return False
             
         hit_record.distance = root

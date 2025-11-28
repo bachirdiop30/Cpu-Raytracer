@@ -1,6 +1,7 @@
-from .hittable import Hittable, HitRecord
+from Core.hittable import Hittable, HitRecord
+from Core.ray import Ray
+from Utils.intervals import Interval
 from Math.vector import *
-from .ray import Ray
 
 class Plane(Hittable):
     def __init__(self, bot_left : Point3, u : Vector3, v : Vector3):
@@ -13,7 +14,7 @@ class Plane(Hittable):
         self._d = self.normal.dot(self.bot_left)
         self._w = normal / normal.dot(normal)
 
-    def hit(self, r : Ray, ray_tmin, ray_tmax, hit_record : HitRecord):
+    def hit(self, r : Ray, interval : Interval, hit_record : HitRecord):
         denom = self.normal.dot(r.direction)
 
         if abs(denom) < 1e-8:
@@ -21,7 +22,8 @@ class Plane(Hittable):
         
         t = (self._d - self.normal.dot(r.origin)) / denom
 
-        if t < ray_tmin or t > ray_tmax:
+        if t < interval.min_val or t > interval.max_val:
+            # print(f"{t} < {interval.min_val}")
             return False
 
         intersection = r.at(t)

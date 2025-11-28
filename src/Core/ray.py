@@ -6,6 +6,6 @@ class Ray:
         self.direction = direction
 
     # P(t) = origin + t*direction (IMPORTANT, EXAM ?)
-    def at(self, t) -> Point3:
+    def at(self, t : float) -> Point3:
         return self.origin + t * self.direction
         
