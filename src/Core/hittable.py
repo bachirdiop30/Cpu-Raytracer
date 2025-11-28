@@ -1,5 +1,6 @@
 from .ray import Ray, Vector3
 from Math.vector import *
+from Utils.intervals import Interval
 
 class HitRecord:
     point : Point3
@@ -17,7 +18,7 @@ class Hittable:
     def __init__(self):
         pass
 
-    def hit(self, r : Ray, ray_tmin : float, ray_tmax : float, hit_record : HitRecord) -> bool:
+    def hit(self, r : Ray, interval : Interval, hit_record : HitRecord) -> bool:
         pass
 
 
@@ -34,13 +35,12 @@ class HittableList(Hittable):
     def add(self, object : Hittable):
         self.objects.append(object)
     
-    def hit(self, r, ray_tmin, ray_tmax, hit_record):
+    def hit(self, r, interval, hit_record):
         temp_rec : HitRecord = HitRecord()
         hit_anything = False
-        closest_so_far = ray_tmax
-
+        closest_so_far = interval.max_val
         for obj in self.objects:
-            if obj.hit(r, ray_tmin, closest_so_far, temp_rec):
+            if obj.hit(r, Interval(interval.min_val, closest_so_far), temp_rec):
                 hit_anything = True
 
                 closest_so_far = temp_rec.distance

@@ -22,5 +22,6 @@ class Interval:
         return val
 
 
-Interval.empty = Interval(math.inf, -math.inf)
-Interval.universe = Interval(-math.inf, math.inf)
+empty = Interval(math.inf, -math.inf)
+universe = Interval(-math.inf, math.inf)
+zeroExToInf = Interval(0.001, math.inf)

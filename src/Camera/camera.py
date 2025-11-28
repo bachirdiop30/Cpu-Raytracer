@@ -1,9 +1,9 @@
 from math import trunc
 from Math.vector import Point3, Vector3, Color3, random_on_hemisphere
-from Core.primitives import hit_sphere
 from Core.hittable import *
 from Core.ray import Ray
 from Display.PPMWriter import PPMWriter
+from Utils.intervals import Interval, zeroExToInf
 import random
 import concurrent.futures
 import functools
@@ -34,13 +34,14 @@ class Camera:
         return Ray(ray_origin, ray_direction)
 
     def ray_color(self, ray : Ray, world, max_bounce_count):
-        if self._max_ray_bounces <= 0: 
+        if max_bounce_count <= 0: 
             return Color3(0, 0, 0)
 
         rec = HitRecord()
-        if world.hit(ray, 0.001, float('inf'), rec):
+        if world.hit(ray, zeroExToInf, rec):
             vec_direction = random_on_hemisphere(rec.normal)
             new_ray = Ray(rec.point, vec_direction)
+
             return 0.5 * self.ray_color(new_ray, world, max_bounce_count - 1)
 
         unit_dir = ray.direction.normalize()
@@ -77,20 +78,23 @@ class Camera:
         self._pixel00_loc = viewport_upper_left + 0.5 * (self._pixel_delta_u + self._pixel_delta_v)
 
 
-    def write_img_to_file(self):
-        with open("aa10.ppm", "w") as f:
+    def write_img_to_file(self, output):
+        with open(output, "w") as f:
             writer = PPMWriter(self._img_width, self._img_height, f)
             writer.write_image(self._img_ro_render)
 
 
-    def render(self, world):
+    def render(self, world, output = "output.ppm"):
         #TODO: add hittables abstraction layer t primitives
         self.initialize_camera()
         num_cores = multiprocessing.cpu_count()
-        with concurrent.futures.ProcessPoolExecutor(max_workers=num_cores) as executor:
+        print("Total Cpu Cores : " + str(num_cores))
+        num_cores = (num_cores - 2) if num_cores > 0 else 1
+        print("Working Cpu Cores : " + str(num_cores))
+        with concurrent.futures.ProcessPoolExecutor(max_workers= num_cores) as executor:
             func = functools.partial(self.process_scanlines, world=world)
             results = executor.map(func, range(self._img_height))
             self._img_ro_render = list(results)
-        self.write_img_to_file()
+        self.write_img_to_file(output)
 
 
