@@ -7,8 +7,8 @@ from Core.object_factory import MaterialFactory, PrimitiveFactory
 
 import time
 
-SAMPLES_PER_PIXEL = 100
-CAMERA_WIDTH = 600
+SAMPLES_PER_PIXEL = 10
+CAMERA_WIDTH = 400
 
 def process(config, output):
     config_loader = ConfigLoader(config)
@@ -33,15 +33,8 @@ def process(config, output):
             raise ValueError(f"Primitive creation failed for {prim_data}")
         world.add(primitive)
 
-    camera = Camera(CAMERA_WIDTH,
-                    (16.0 / 9.0),
-                    samples_per_pixel=SAMPLES_PER_PIXEL,
-                    max_ray_bounces=50,
-                    vfov=40,
-                    vup=Vector3(0, 1, 0),
-                    lookfrom=Point3(278, 278, -800),
-                    lookat=Point3(278, 278, 0),
-                    background=Color3(0.0, 0.0, 0.0)) # you guys can change the last variable for sampling rate, 5 is already high in python
+
+    camera = Camera(camera["width"], (16.0 / 9.0), samples_per_pixel=camera["samples_per_pixel"], max_ray_bounces=50) # you guys can change the last variable for sampling rate, 5 is already high in python
     camera.render(world, output = output)
 
 if __name__ == "__main__": # for args we'll have : args[1] = config_file_path, and args[2] = output_path.ppm
